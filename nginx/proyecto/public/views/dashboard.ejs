@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css/estilos.css" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+
+<body class="dashboard-body">
+  <header>
+    <div class="header-container">
+      <a class="logo" href="#"><img src="../css/logo.png" alt=""></a>
+      
+      <form action="/users/buscar" id="searchForm" class="search-bar" method="get ">
+        <i class="icono-lupa fas fa-search"></i>
+        <input id="searchUsername" name="searchUsername" placeholder="Buscar Usuario..." required />
+        <input type="submit" value="Buscar" />
+      </form>
+    </div>
+  </header>
+  
+  <main class="dashboard-container">
+    <!-- Sidebar Izquierdo -->
+    <aside class="sidebar">
+      <h2>Menú</h2>
+      <ul>
+        <li><a href="/dashboard">Inicio</a></li>
+        <li><a href="/crear-publicacion">Crear publicación</a></li>
+        <li><a href="/configuracion">Configuración</a></li>
+        <li><a href="/perfil">Perfil</a></li>
+        <li><a href="/guia">Guia</a></li>
+        <li><a href="/">Cerrar sesión</a></li>
+      </ul>
+    </aside>
+
+    <section class="feed">
+      <h1>Publicaciones Recientes</h1>
+      <ul>
+        <% posts.forEach(post => { %>
+          <li class="post">
+            <div class="post-header">
+              <strong><%= post.username %></strong> <!-- Nombre del usuario -->
+              <% if (post.images && post.images.length > 0) { %>
+                <div class="post-images-container">
+                  <% post.images.forEach((image, index) => { %>
+                    <a href="/post/<%= post._id %>">
+                      <div class="post-image-wrapper <%= index > 0 ? 'hidden' : '' %>" data-post="<%= post._id %>" data-image="<%= index %>">
+                        <img 
+                          class="post-image" 
+                          src="data:<%= image.contentType %>;base64,<%= image.data.toString('base64') %>" 
+                          alt="Imagen de la publicación"
+                        >
+                      </div>
+                    </a>
+                  <% }) %>
+                  
+                  <% if (post.images.length > 1) { %>
+                    <div class="image-nav">
+                      <button class="prev-image" onclick="nextImage('<%= post._id %>', <%= post.images.length %>, -1)">&#8592;</button>
+                      <button class="next-image" onclick="nextImage('<%= post._id %>', <%= post.images.length %>, 1)">&#8594;</button>
+                    </div>
+                  <% } %>
+                </div>
+              <% } %>
+            </div>
+            <p>Descripción: <%= post.description %></p>
+            <p id="tocar">👆🏻toca la imagen para ver mas detalles</p>
+            <div class="post-footer">
+              <button class="like-btn" data-id="<%= post._id %>">Me gusta</button>
+              <p id="likes">Me gustas: <%= post.likes %></p>
+              <p id="comments">Comentarios: <%= post.comments %></p>
+            </div>
+            <form action="/posts/<%= post._id %>/comment" method="post">
+              <input type="text" name="comment" placeholder="Añadir un comentario..." />
+              <input type="submit" value="Enviar" />
+            </form>
+          </li>
+        <% }); %>
+      </ul>
+    </section>
+
+    <aside class="sidebar-right">
+
+  <div class="card">
+    <div class="chat-header">Chat</div>
+      <div class="chat-window">
+        <ul class="message-list"></ul>
+      </div>
+      <div class="chat-input">
+          <input type="text" class="message-input" placeholder="Type your message here">
+          <button class="send-button">Send</button>
+      </div>
+    </div>
+    </aside>
+  </main>
+
+  <script>
+    function nextImage(postId, totalImages, direction) {
+      const postImages = document.querySelectorAll(`.post-image-wrapper[data-post="${postId}"]`);
+      let currentIndex = Array.from(postImages).findIndex(image => !image.classList.contains('hidden'));
+      
+      // Calcula el siguiente índice
+      let nextIndex = currentIndex + direction;
+
+      // Si el siguiente índice es válido, muestra la imagen correspondiente
+      if (nextIndex >= 0 && nextIndex < totalImages) {
+        postImages[currentIndex].classList.add('hidden'); // Ocultar la imagen actual
+        postImages[nextIndex].classList.remove('hidden'); // Mostrar la siguiente imagen
+
+        // Actualiza el estado de las flechas
+        updateArrowState(postId, totalImages, nextIndex);
+      }
+    }
+
+    function updateArrowState(postId, totalImages, currentIndex) {
+      const prevArrow = document.querySelector(`.prev-image[data-post="${postId}"]`);
+      const nextArrow = document.querySelector(`.next-image[data-post="${postId}"]`);
+      
+      // Si estamos en la primera imagen, deshabilita la flecha de retroceso
+      if (currentIndex === 0) {
+        prevArrow.disabled = true;
+      } else {
+        prevArrow.disabled = false;
+      }
+
+      // Si estamos en la última imagen, deshabilita la flecha de avance
+      if (currentIndex === totalImages - 1) {
+        nextArrow.disabled = true;
+      } else {
+        nextArrow.disabled = false;
+      }
+    }
+      // Añadir evento de click a todos los botones "Me gusta"
+  document.querySelectorAll('.like-btn').forEach(button => {
+    button.addEventListener('click', async () => {
+      const postId = button.getAttribute('data-id');
+
+      try {
+        // Hacer la solicitud POST para dar "Me gusta"
+        const response = await fetch(`http://localhost:3000/posts/${postId}/like`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        // Obtener la respuesta del servidor
+        const result = await response.json();
+
+        if (response.ok) {
+          // Actualizar el contador de "Me gustas" en el DOM
+          const likesElement = button.nextElementSibling;
+          likesElement.textContent = `Me gustas: ${result.likes}`; // Actualizar el número de likes
+        } else {
+          console.error('Error al dar me gusta:', result.message);
+        }
+      } catch (error) {
+        console.error('Error al procesar la solicitud:', error);
+      }
+    });
+  });
+  </script>
+</body>
+</html>
+

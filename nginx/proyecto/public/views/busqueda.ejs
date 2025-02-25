@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Búsqueda</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body class="body-busqueda">
+    <header>
+        <div class="header-container">
+          <a class="logo" href="/dashboard"><img src="../css/logo.png" alt=""></a>
+          
+          <form action="/users/buscar" id="searchForm" class="search-bar" method="get ">
+            <i class="icono-lupa fas fa-search"></i>
+            <input id="searchUsername" name="searchUsername" placeholder="Buscar Usuario..." required />
+            <input type="submit" value="Buscar" />
+          </form>
+        </div>
+      </header>
+
+      <div class="perfil-contenedor">
+        <h1>Perfil de Usuario</h1>
+
+        <% if (user) { %>
+        <div class="usuario-info">
+            <h2>Información del Usuario</h2>
+            <p><strong>Nombre de usuario:</strong> <%= user.username %></p>
+            <p><strong>Seguidores:</strong> <%= user.followers.length %></p>
+            <a href="/perfil"><button class="boton-seguir">Seguir</button></a>
+        </div>
+        <% } %>
+    </div>
+</body>
+</html>

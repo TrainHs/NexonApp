@@ -1,0 +1,61 @@
+[{
+    "_id": "0d0ef871-9257-4040-ab7f-18ed7923bff7",
+    "name": "Junior De Oleo",
+    "username": "junior",
+    "bornDate": {
+      "$date": "2002-05-29T00:00:00.000Z"
+    },
+    "email": "junior@junior.com",
+    "password": "$2b$10$aZV/AH3TqDrBkDekazvwuOUEVX/WyhtKnCfn1vJ1ndqB2j7VusHHq",
+    "gender": [
+      "Masculino"
+    ],
+    "following": [
+      "juan"
+    ],
+    "followers": [],
+    "registerDate": {
+      "$date": "2024-10-13T13:59:29.115Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "3a1e4e02-dcd3-4b8d-807b-e04514209044",
+    "name": "Juan",
+    "username": "juan",
+    "bornDate": {
+      "$date": "1978-12-04T00:00:00.000Z"
+    },
+    "email": "juan@juan.com",
+    "password": "$2b$10$bG2MbL.ZYB/CpJ0FxAXPaeWEjjJXHYAdpQkl8/uGnStV5Ua/Mspx6",
+    "gender": [
+      "Masculino"
+    ],
+    "following": [],
+    "followers": [
+      "junior"
+    ],
+    "registerDate": {
+      "$date": "2024-10-13T14:01:10.649Z"
+    },
+    "__v": 1
+  },
+  {
+    "_id": "548ee5a9-c9fa-44c7-a00e-7a73b729abae",
+    "name": "Paula Bou",
+    "username": "paula",
+    "bornDate": {
+      "$date": "2004-04-19T00:00:00.000Z"
+    },
+    "email": "paula@paula.com",
+    "password": "$2b$10$YGGzpCJyvONVg4K7kqXIieHeb/sgqURUwQsE5DFPv/0T/sptdLiou",
+    "gender": [
+      "Femenino"
+    ],
+    "following": [],
+    "followers": [],
+    "registerDate": {
+      "$date": "2024-10-13T14:03:22.530Z"
+    },
+    "__v": 0
+  }]

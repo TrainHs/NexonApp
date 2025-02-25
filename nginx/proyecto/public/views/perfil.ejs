@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil de Usuario</title>
+  <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body class="perfil-body">
+  <!-- Contenedor Principal -->
+  <header>
+    <div class="header-container">
+      <a class="logo" href="/dashboard"><img src="../css/logo.png" alt=""></a>
+      
+      <!-- Barra de búsqueda con ícono de lupa -->
+      <form action="/users/buscar" id="searchForm" class="search-bar" method="get ">
+        <i class="icono-lupa fas fa-search"></i>
+        <input id="searchUsername" name="searchUsername" placeholder="Buscar Usuario..." required />
+        <input type="submit" value="Buscar" />
+      </form>
+    </div>
+  </header>
+
+  <div class="perfil-container">
+  
+    <!-- Nombre de usuario y estadísticas -->
+    <div class="perfil-header">
+      <h2 class="perfil-username"><%= username %></h2>
+      <div class="perfil-stats">
+        <p><strong>Siguiendo:</strong> <%= followingCount %></p>
+        <p><strong>Seguidores:</strong> <%= followersCount %></p>
+      </div>
+    </div>
+
+    <hr class="perfil-divider">
+
+    <div class="perfil-publicaciones"> 
+      <% if (posts && posts.length > 0) { %>
+        <div class="perfil-posts-container">
+          <% posts.forEach((post, postIndex) => { %>
+            <div class="perfil-single-post">
+              <h3 class="perfil-post-title">Publicación</h3>
+              <p><strong>Descripción:</strong> <%= post.description %></p>
+              
+              <!-- Contenedor para las imágenes -->
+              <div class="perfil-post-images-container">
+                <% post.images.forEach((image, index) => { %>
+                  <a href="/post/<%= post._id %>" class="perfil-post-link">
+                    <div class="perfil-post-image-wrapper <%= index > 0 ? 'hidden' : '' %>" data-post="<%= postIndex %>" data-image="<%= index %>">
+                      <img src="data:<%= image.contentType %>;base64,<%= image.data.toString('base64') %>" alt="Imagen del post" class="perfil-post-image">
+                    </div>
+                  </a>
+                <% }) %>
+                
+                <% if (post.images.length > 1) { %>
+                  <div class="perfil-image-nav">
+                    <button class="perfil-prev-image" onclick="nextImage(<%= postIndex %>, <%= post.images.length %>, -1)">&#8592;</button>
+                    <button class="perfil-next-image" onclick="nextImage(<%= postIndex %>, <%= post.images.length %>, 1)">&#8594;</button>
+                  </div>
+                <% } %>
+              </div>
+              
+              <p><strong>Likes:</strong> <%= post.likes %></p>
+              <p><strong>Comentarios:</strong> <%= post.comments %></p>
+              <p><small>Publicado el: <%= post.date.toDateString() %></small></p>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p>No hay publicaciones disponibles.</p>
+      <% } %>
+    </div>
+    
+
+  <script>
+    function nextImage(postIndex, totalImages, direction) {
+      const currentImage = document.querySelector(`.perfil-post-image-wrapper[data-post="${postIndex}"]:not(.hidden)`);
+      let nextImage;
+      
+      if (direction === 1) {
+        nextImage = currentImage.nextElementSibling || document.querySelector(`.perfil-post-image-wrapper[data-post="${postIndex}"]:first-child`);
+      } else {
+        nextImage = currentImage.previousElementSibling || document.querySelector(`.perfil-post-image-wrapper[data-post="${postIndex}"]:last-child`);
+      }
+
+      currentImage.classList.add('hidden');
+      nextImage.classList.remove('hidden');
+    }
+
+  function nextImage(postIndex, totalImages, direction) {
+    const postImages = document.querySelectorAll(`.perfil-post-image-wrapper[data-post="${postIndex}"]`);
+    let currentIndex = Array.from(postImages).findIndex(image => !image.classList.contains('hidden'));
+    
+    // Calcula el siguiente índice
+    let nextIndex = currentIndex + direction;
+
+    // Si el siguiente índice es válido, muestra la imagen correspondiente
+    if (nextIndex >= 0 && nextIndex < totalImages) {
+      postImages[currentIndex].classList.add('hidden'); // Ocultar la imagen actual
+      postImages[nextIndex].classList.remove('hidden'); // Mostrar la siguiente imagen
+
+      // Actualiza el estado de las flechas
+      updateArrowState(postIndex, totalImages, nextIndex);
+    }
+  }
+
+  function updateArrowState(postIndex, totalImages, currentIndex) {
+    const prevArrow = document.querySelector(`.perfil-prev-image[data-post="${postIndex}"]`);
+    const nextArrow = document.querySelector(`.perfil-next-image[data-post="${postIndex}"]`);
+    
+    // Si estamos en la primera imagen, deshabilita la flecha de retroceso
+    if (currentIndex === 0) {
+      prevArrow.disabled = true;
+    } else {
+      prevArrow.disabled = false;
+    }
+
+    // Si estamos en la última imagen, deshabilita la flecha de avance
+    if (currentIndex === totalImages - 1) {
+      nextArrow.disabled = true;
+    } else {
+      nextArrow.disabled = false;
+    }
+  }
+
+  </script>
+</body>
+</html>
+
+
+

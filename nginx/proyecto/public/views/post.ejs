@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Publicación</title>
+  <link rel="stylesheet" href="../css/estilos.css" />
+</head>
+
+<body class="pagina-publicacion">
+
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <a class="logo" href="/dashboard"><img src="../css/logo.png" alt="Logo"></a>
+
+      <form action="/users/buscar" id="searchForm" class="search-bar" method="get">
+        <i class="icono-lupa fas fa-search"></i>
+        <input id="searchUsername" name="searchUsername" placeholder="Buscar Usuario..." required />
+        <input type="submit" value="Buscar" />
+      </form>
+    </div>
+  </header>
+
+  <!-- Encabezado de la Publicación -->
+  <section class="encabezado-publicacion">
+    <p class="nombre-usuario"><strong><%= username %></strong></p>
+  </section>
+
+  <!-- Contenedor de la Publicación -->
+  <article class="contenedor-publicacion">
+    <div class="contenido-publicacion">
+
+      <!-- Contenedor de Imágenes -->
+      <div class="contenedor-imagenes">
+        <div class="post-images-container">
+          <% images.forEach((image, index) => { %>
+            <a href="#">
+              <div class="post-image-wrapper <%= index > 0 ? 'hidden' : '' %>" data-post="0" data-image="<%= index %>">
+                <img class="imagen-post"
+                     src="data:<%= image.contentType %>;base64,<%= image.data.toString('base64') %>"
+                     alt="Imagen de la publicación" />
+              </div>
+            </a>
+          <% }) %>
+        </div>
+        <% if (images.length > 1) { %>
+          <div class="image-nav">
+            <button class="prev-image" onclick="nextImage(0, <%= images.length %>, -1)">&#8592;</button>
+            <button class="next-image" onclick="nextImage(0, <%= images.length %>, 1)">&#8594;</button>
+          </div>
+        <% } %>
+      </div>
+
+      <div class="detalles-publicacion">
+        <!-- Descripción -->
+        <p class="descripcion-post"><%= description %></p>
+
+        <!-- Comentarios -->
+        <h5 class="titulo-comentarios">Comentarios</h5>
+        <ul class="lista-comentarios">
+          <% comments.forEach(comment => { %>
+            <li class="comentario">
+              <strong class="usuario-comentario"><%= comment.username %></strong>
+              <span class="texto-comentario"><%= comment.comment %></span>
+            </li>
+          <% }) %>
+        </ul>
+
+        <!-- Formulario de Comentarios -->
+        <form class="formulario-comentarios" action="/posts/<%= postId %>/comment" method="post">
+          <input class="input-comentario" type="text" name="comment" placeholder="Añadir un comentario..." />
+          <input class="boton-comentario" type="submit" value="Enviar" />
+        </form>
+
+        <!-- Interacciones -->
+        <div class="interacciones-publicacion">
+          <p class="me-gustas">Me gustas: <%= likes.length %></p>
+          <button class="boton-like" data-id="<%= postId %>">Me gusta</button>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <script>
+    function nextImage(postId, totalImages, direction) {
+      const postImages = document.querySelectorAll(`.post-image-wrapper[data-post="${postId}"]`);
+      let currentIndex = Array.from(postImages).findIndex(image => !image.classList.contains('hidden'));
+      
+      // Calcula el siguiente índice
+      let nextIndex = currentIndex + direction;
+
+      // Si el siguiente índice es válido, muestra la imagen correspondiente
+      if (nextIndex >= 0 && nextIndex < totalImages) {
+        postImages[currentIndex].classList.add('hidden'); // Ocultar la imagen actual
+        postImages[nextIndex].classList.remove('hidden'); // Mostrar la siguiente imagen
+
+        // Actualiza el estado de las flechas
+        updateArrowState(postId, totalImages, nextIndex);
+      }
+    }
+
+    function updateArrowState(postId, totalImages, currentIndex) {
+      const prevArrow = document.querySelector(`.prev-image[data-post="${postId}"]`);
+      const nextArrow = document.querySelector(`.next-image[data-post="${postId}"]`);
+      
+      // Si estamos en la primera imagen, deshabilita la flecha de retroceso
+      if (currentIndex === 0) {
+        prevArrow.disabled = true;
+      } else {
+        prevArrow.disabled = false;
+      }
+
+      // Si estamos en la última imagen, deshabilita la flecha de avance
+      if (currentIndex === totalImages - 1) {
+        nextArrow.disabled = true;
+      } else {
+        nextArrow.disabled = false;
+      }
+    }
+      // Añadir evento de click a todos los botones "Me gusta"
+  document.querySelectorAll('.like-btn').forEach(button => {
+    button.addEventListener('click', async () => {
+      const postId = button.getAttribute('data-id');
+
+      try {
+        // Hacer la solicitud POST para dar "Me gusta"
+        const response = await fetch(`http://localhost:3000/posts/${postId}/like`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        // Obtener la respuesta del servidor
+        const result = await response.json();
+
+        if (response.ok) {
+          // Actualizar el contador de "Me gustas" en el DOM
+          const likesElement = button.nextElementSibling; // El siguiente elemento del botón es el <p> de "Me gustas"
+          likesElement.textContent = `Me gustas: ${result.likes}`; // Actualizar el número de likes
+        } else {
+          console.error('Error al dar me gusta:', result.message);
+        }
+      } catch (error) {
+        console.error('Error al procesar la solicitud:', error);
+      }
+    });
+  });
+
+   document.getElementById('commentForm').addEventListener('submit', function(event) {
+        event.preventDefault();  // Evitar que el formulario se envíe de manera tradicional
+
+        const comment = document.getElementById('commentInput').value;  // Obtener el comentario del campo de texto
+
+        // Enviar el comentario de manera asincrónica con fetch
+        fetch(this.action, {  // Usar la acción del formulario para obtener la URL de destino
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ comment: comment })  // Enviar el comentario en formato JSON
+        })
+        .then(response => response.json())  // Suponiendo que la respuesta es un JSON
+        .then(data => {
+            if (data.success) {
+                // Si el comentario se envía correctamente, hacer algo (ej. mostrarlo sin recargar)
+                alert('Comentario enviado con éxito');
+                // Limpiar el campo de texto
+                document.getElementById('commentInput').value = '';
+            } else {
+                alert('Error al enviar el comentario');
+            }
+        })
+        .catch(error => {
+            alert('Ocurrió un error. Inténtalo de nuevo');
+            console.error(error);
+        });
+    });
+    document.querySelectorAll('.like-btn').forEach(button => {
+    button.addEventListener('click', async () => {
+      const postId = button.getAttribute('data-id');
+
+      try {
+        // Hacer la solicitud POST para dar "Me gusta"
+        const response = await fetch(`http://localhost:3000/posts/${postId}/like`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        // Obtener la respuesta del servidor
+        const result = await response.json();
+
+        if (response.ok) {
+          // Actualizar el contador de "Me gustas" en el DOM
+          const likesElement = button.nextElementSibling;
+          likesElement.textContent = `Me gustas: ${result.likes}`; // Actualizar el número de likes
+        } else {
+          console.error('Error al dar me gusta:', result.message);
+        }
+      } catch (error) {
+        console.error('Error al procesar la solicitud:', error);
+      }
+    });
+  });
+  </script>
+
+</body>
+</html>
+
+
+  
+
+
+

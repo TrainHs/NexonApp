@@ -1,0 +1,25 @@
+POST http://localhost:3002/posts
+Content-Type: "application/json"
+
+{
+  "image": "https://static.wikia.nocookie.net/piratasdelcaribe-es-la/images/b/be/Piratas_del_Caribe_el_cofre_del_hombre_muerto.jpg/revision/latest?cb=20170525112416&path-prefix=es",
+  "description": "This is my first post!"
+}
+
+###
+DELETE http://localhost:3002/posts/66eef1a5f5ec3b71b5ca7e96
+
+PATCH http://localhost:3002/posts/image
+
+###
+POST http://localhost:3002/users/register
+Content-Type: "application/json"
+
+{
+  "user": "newuser",
+  "lastName": "Doe",
+  "bornDate": "1990-01-01",
+  "email": "newuser@example.com",
+  "phone": "1234567890",
+  "password": "securepassword123"
+}

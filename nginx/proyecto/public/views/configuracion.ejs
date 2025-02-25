@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body class="centro">
+
+    <header>
+        <div class="header-container">
+            <a class="logo" href="/dashboard"><img src="../css/logo.png" alt=""></a>
+          
+          <form action="/users/buscar" id="searchForm" class="search-bar" method="get ">
+            <i class="icono-lupa fas fa-search"></i>
+            <input id="searchUsername" name="searchUsername" placeholder="Buscar Usuario..." required />
+            <input type="submit" value="Buscar" />
+          </form>
+        </div>
+      </header>
+   
+
+
+    <div class="cuerpo-configuracion">
+        <h1 class="titulo-configuracion">Bienvenido a Configuración</h1>
+        
+        <div class="lista-opciones">
+            <!-- Opción de actualizar nombre de usuario -->
+            <div class="opcion-configuracion">
+                <h2 class="titulo-opcion">Cambiar Nombre</h2>
+                <p class="descripcion-opcion">En esta opción podrás actualizar el nombre.</p>
+                <a href="/actualizar-nombre" class="boton-opcion">Actualizar nombre</a>
+            </div>
+
+        
+            <div class="opcion-configuracion">
+                <h2 class="titulo-opcion">Actualizar Nombre de Usuario</h2>
+                <p class="descripcion-opcion">En esta opción podrás actualizar tu nombre de usuario. Si olvidaste el anterior, puedes cambiarlo aquí.</p>
+                <a href="/actualizar-usuario" class="boton-opcion">Actualizar Usuario</a>
+            </div>
+
+            <!-- Opción de actualizar contraseña -->
+            <div class="opcion-configuracion">
+                <h2 class="titulo-opcion">Actualizar Contraseña</h2>
+                <p class="descripcion-opcion">En esta opción podrás cambiar tu contraseña actual por una nueva, por motivos de seguridad.</p>
+                <a href="/update-password" class="boton-opcion">Cambiar Contraseña</a>
+            </div>
+
+            <!-- Opción de actualizar correo electrónico -->
+            <div class="opcion-configuracion">
+                <h2 class="titulo-opcion">Actualizar Correo</h2>
+                <p class="descripcion-opcion">Si deseas actualizar tu correo electrónico, puedes hacerlo aquí. Es importante mantener tu correo actualizado.</p>
+                <a href="/update-email" class="boton-opcion">Actualizar Correo</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+

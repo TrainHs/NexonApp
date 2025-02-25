@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar nombre</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body class="nombre">
+
+    <header>
+        <div class="header-container">
+            <a class="logo" href="dashboard">
+                <img src="../css/logo.png" alt="Logo">
+            </a>
+
+            <form action="/users/buscar" id="searchForm" class="search-bar" method="get">
+                <i class="icono-lupa fas fa-search"></i>
+                <input id="searchUsername" name="searchUsername" placeholder="Buscar Usuario..." required />
+                <input type="submit" value="Buscar" />
+            </form>
+        </div>
+    </header>
+     
+    <div class="contenedor">
+        <form id="nameForm" class="formulario" action="/users/name-update" method="post">
+            <label for="newName" class="etiqueta">Nuevo nombre:</label>
+            <input type="text" id="newName" name="newName" value="<%= name %>" required class="entrada" /><br><br>
+            <button type="submit" id="update" class="boton">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("nameForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            
+            const newName = document.getElementById("newName").value;
+
+            fetch("/users/name-update", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    newName: newName
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);  // Mostrar mensaje de éxito
+                    document.getElementById("newName").value = newName;
+                } else {
+                    alert(data.message || "Error al actualizar el nombre, vuélvelo a intentar");  // Mostrar mensaje de error
+                }
+            })
+            .catch(err => {
+                alert("Ocurrió un error con la solicitud.");
+                console.error(err);
+            });
+        });
+    </script>
+</body>
+</html>
+

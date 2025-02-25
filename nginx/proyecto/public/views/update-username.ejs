@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar nombre de usuario</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body class="usuario">
+
+    <header>
+        <div class="header-container">
+            <a class="logo" href="dashboard">
+                <img src="../css/logo.png" alt="Logo">
+            </a>
+
+            <form action="/users/buscar" id="searchForm" class="search-bar" method="get">
+                <i class="icono-lupa fas fa-search"></i>
+                <input id="searchUsername" name="searchUsername" placeholder="Buscar Usuario..." required />
+                <input type="submit" value="Buscar" />
+            </form>
+        </div>
+    </header>
+
+   
+    <form id="usernameForm" class="formulario1" action="/users/username-update" method="post">
+        <input type="text" class="nuevoNombreUsuario" name="newUsername" placeholder="Introduce tu nombre de usuario" required />
+        <input type="submit" value="Cambiar" class="boton">
+    </form>
+
+    <script>
+        document.getElementById("usernameForm").addEventListener("submit", function(event) {
+            event.preventDefault(); 
+
+            const newUsername = document.querySelector(".nuevoNombreUsuario").value; // Obtener el nuevo nombre de usuario
+
+            fetch("/users/username-update", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ newUsername: newUsername })
+            })
+            .then(response => response.json()
+            .then(data => {
+                if (data.success) {
+                    alert("Nombre de usuario actualizado exitosamente.");
+                } else {
+                    // Manejar diferentes tipos de error con alertas personalizadas
+                    switch (data.type) {
+                        case "validation_error":
+                            alert(`Error: ${data.message}`);
+                            break;
+                        case "username_taken":
+                            alert(`Error: ${data.message}`);
+                            break;
+                        case "user_not_found":
+                            alert(`Error: ${data.message}`);
+                            break;
+                        case "server_error":
+                            alert(`Error inesperado: ${data.message}`);
+                            break;
+                        default:
+                            alert("Ha ocurrido un error desconocido.");
+                    }
+                }
+            })
+            .catch(error => {
+                console.log("Ha habido un error, vuélvelo a intentar.");
+                console.error(error);
+            });
+        });
+    </script>
+</body>
+</html>
+

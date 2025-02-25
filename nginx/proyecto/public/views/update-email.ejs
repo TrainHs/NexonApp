@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Correo</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+
+<header>
+    <div class="header-container">
+      <a class="logo" href="dashboard"><img src="../css/logo.png" alt=""></a>
+      
+      <form action="/users/buscar" id="searchForm" class="search-bar" method="get ">
+        <i class="icono-lupa fas fa-search"></i>
+        <input id="searchUsername" name="searchUsername" placeholder="Buscar Usuario..." required />
+        <input type="submit" value="Buscar" />
+      </form>
+    </div>
+  </header>
+
+<body class="correo">
+    <div class="contenedor">
+        <form id="formularioCorreo" action="/users/recovery-email" method="post">
+            <label for="nuevoCorreo" class="etiqueta">Correo:</label>
+            <input type="email" id="nuevoCorreo" name="newEmail" value="<%= email %>" required class="entrada" /><br><br>
+            <button type="submit" id="enviar" class="boton">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+    fetch("http://localhost:3000/updated-email", {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            currentEmail: "correo_actual@example.com", // Correo actual
+            newEmail: "correo_nuevo@example.com"      // Nuevo correo
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.href = "/";
+        } else {
+            response.json().then(data => alert(data.message));
+        }
+    })
+    .catch(err => console.error("Error:", err));
+    </script>
+</body>
+
+</html>

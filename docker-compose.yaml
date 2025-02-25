@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  app:
+    image: node:18
+    container_name: app_nginx
+    working_dir: /nginx/proyecto
+    volumes:
+      - ./nginx/proyecto:/nginx/proyecto
+    ports:
+      - "3000:3000"  # Node.js usualmente corre en 3000
+    depends_on:
+      - mongodb
+    command: sh -c "npm install && node server.js"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app_network
+
+  nginx:
+    build: ./nginx
+    container_name: nginx_server
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    networks:
+      - app_network
+
+  mongodb:
+    image: mongo:6
+    container_name: mongodb
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+      - ./database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+    ports:
+      - "27017:27017"
+    networks:
+      - app_network
+    environment:
+      MONGO_INITDB_DATABASE: Proyecto
+
+volumes:
+  mongo_data:
+    driver: local
+
+networks:
+  app_network:
+    driver: bridge
+

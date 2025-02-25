@@ -1,0 +1,922 @@
+/* Reseteo de estilos básicos */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212; /* Fondo oscuro para todo el sitio */
+    color: #e0e0e0; /* Texto en gris claro */
+    overflow-y: hidden; /* Ocultar el desplazamiento vertical del body */
+}
+
+/* Estilo del header */
+header {
+    background-color: #1c1c1c; /* Fondo ligeramente más claro que el body */
+    border-bottom: 1px solid #333;
+    padding: 20px 40px;
+    height: 80px;
+    color: #fff;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Barra de búsqueda */
+.search-bar {
+    display: flex;
+    align-items: center;
+    border: 1px solid #333;
+    border-radius: 20px;
+    padding: 5px 10px;
+    background-color: #333;
+    width: 300px;
+}
+
+.search-bar input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: #e0e0e0;
+    padding: 5px 10px;
+}
+
+.icono-lupa {
+    color: #888;
+    margin-right: 10px;
+}
+
+/* Contenedor principal */
+.dashboard-container {
+    display: flex;
+    height: calc(100vh - 80px);
+    overflow: hidden;
+    justify-content: center; /* Centra el feed */
+}
+
+/* Sidebar izquierdo */
+.sidebar {
+    width: 31.5%;
+    background-color: #1c1c1c;
+    color: #fff;
+    padding: 20px;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    height: calc(100% - 80px);
+    overflow-y: auto;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    margin: 15px 0;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #e0e0e0;
+    padding: 10px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+/* Feed de publicaciones */
+.feed {
+    flex: 1;
+    padding: 20px;
+    background-color: #121212;
+    overflow-y: auto;
+    max-width: 800px; /* Aumentamos el ancho máximo */
+    width: 100%;
+    margin-left: 30%; /* Ajustamos el margen izquierdo para acercarlo al contenedor de mensajes */
+}
+
+/* Publicación */
+.feed .post {
+    background-color: #1f1f1f;
+    border: 1px solid #333;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.feed .post:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.feed .post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.feed .post-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.feed .post-header strong {
+    font-size: 1rem;
+    color: #e0e0e0;
+}
+
+.feed img {
+    width: 80%; /* Reduce el tamaño de las imágenes al 80% del ancho del contenedor */
+    height: auto; /* Mantiene las proporciones de la imagen */
+    max-width: 500px; /* Máximo ancho de la imagen */
+    display: block;
+    margin: 0 auto; /* Centra la imagen */
+    border: none; /* Sin bordes */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+/* Estilo de las descripciones dentro de las publicaciones */
+.feed .post p {
+    font-size: 1rem;
+    color: #bbb; /* Color gris claro para el texto */
+    margin: 10px 0;
+    line-height: 1.5; /* Espaciado entre líneas */
+}
+
+/* Estilo de los "Me gusta" */
+.like-btn {
+    background-color: transparent;
+    border: none;
+    color: #ddd; /* Color claro */
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease, transform 0.3s ease;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.like-btn:hover {
+    color: #fff; /* Blanco al pasar el ratón */
+    transform: scale(1.1); /* Efecto de aumentar ligeramente el tamaño */
+}
+
+/* Estilo del icono de los "Me gusta" */
+.like-btn::before {
+    content: '\2764'; /* Corazón */
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+/* Estilo para el contador de "Me gusta" */
+#likes {
+    font-size: 1rem;
+    color: #888; /* Gris claro */
+    margin-left: 10px;
+}
+
+/* Estilo de los comentarios */
+.feed form input[type="text"] {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background-color: #1f1f1f;
+    color: #ddd;
+    margin-top: 15px;
+    width: 100%; /* Ocupa todo el ancho disponible */
+    box-sizing: border-box; /* Incluir padding y border en el cálculo del ancho */
+}
+
+/* Estilo para el botón de enviar comentario */
+.feed form input[type="submit"] {
+    background-color: #444;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 25px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.feed form input[type="submit"]:hover {
+    background-color: #333; /* Fondo más oscuro al pasar el ratón */
+    transform: scale(1.05); /* Efecto de aumento */
+}
+
+/* Sidebar derecho */
+.sidebar-right {
+    width: 25%;
+    background-color: #1c1c1c;
+    padding: 20px;
+    height: calc(100vh - 80px);
+    position: sticky;
+    top: 0;
+    color: #e0e0e0;
+}
+
+.sidebar-right ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-right li {
+    margin: 15px 0;
+}
+
+.sidebar-right a {
+    text-decoration: none;
+    color: #fff;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    display: block;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar-right a:hover {
+    background-color: #444;
+    color: #e0e0e0;
+}
+
+.sidebar-right h2 {
+    color: #e0e0e0;
+}
+
+/* Footer */
+footer {
+    background-color: #1c1c1c;
+    color: #bbb;
+    text-align: center;
+    padding: 10px 0;
+    border-top: 1px solid #333;
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar,
+    .sidebar-right {
+        width: 100%;
+        position: relative;
+        height: auto;
+    }
+
+    .dashboard-container {
+        flex-direction: column;
+    }
+
+    .feed {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*crear publiacion*/
+
+body{
+    background-color: #3F3E3C;
+}
+
+/* Estilo del encabezado */
+.encabezado-personalizado {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #333333; /* Fondo gris oscuro */
+    border-bottom: 1px solid #444444;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.titulo-encabezado {
+    margin: 0;
+    font-size: 18px;
+    color: #f0f0f0; /* Texto claro */
+}
+
+.boton-volver {
+    color: #f0f0f0; /* Texto claro */
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Contenedor principal */
+.contenedor-principal {
+    display: flex;
+    gap: 30px;
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+    align-items: flex-start;
+}
+
+/* Contenedor de publicación (izquierda) */
+.contenedor-publicacion {
+    flex: 1;
+    padding: 25px;
+    background-color: #4a4a4a; /* Gris oscuro */
+    border: 1px solid #555555;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.etiqueta-personalizada {
+    font-weight: bold;
+    color: #f0f0f0; /* Texto claro */
+    margin-bottom: 8px;
+}
+
+.entrada-texto-personalizada,
+.images {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #555555;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    background-color: #333333; /* Fondo gris oscuro */
+    color: #f0f0f0;
+    margin-bottom: 15px;
+}
+
+.boton-publicar-personalizado {
+    width: 100%;
+    padding: 12px;
+    background-color: #444444; /* Gris medio oscuro */
+    color: #f0f0f0; /* Texto claro */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.boton-publicar-personalizado:hover {
+    background-color: #666666; /* Gris más claro */
+}
+
+/* Contenedor de fotos (derecha) */
+.contenedor-fotos {
+    width: 350px;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    background-color: #333333; /* Fondo gris oscuro */
+}
+
+.slider-fotos {
+    display: flex;
+    width: 300%; /* Tres veces el ancho para las imágenes */
+    animation: deslizar-continuo 30s linear infinite; /* Tiempo aumentado a 30 segundos */
+}
+
+.foto-cambiar {
+    height: 400px;
+    object-fit: cover;
+}
+
+/* Animación de deslizamiento continuo */
+@keyframes deslizar-continuo {
+    0% {
+        transform: translateX(0); /* Comienza en la posición inicial */
+    }
+    33.33% {
+        transform: translateX(-100%); /* Desliza por una imagen */
+    }
+    66.66% {
+        transform: translateX(-200%); /* Desliza por dos imágenes */
+    }
+    100% {
+        transform: translateX(0); /* Regresa al inicio */
+    }
+}
+
+/* Caja de texto centrada */
+.caja-texto {
+    width: 80%; /* Ancho del 80% de la pantalla */
+    max-width: 600px; /* Limitar el ancho máximo */
+    background-color: #f0f0f0; /* Gris claro */
+    padding: 20px;
+    text-align: center;
+    border-radius: 15px; /* Bordes redondeados */
+    margin: 30px auto; /* Centrado horizontal y algo de espacio arriba y abajo */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.caja-texto p {
+    font-size: 18px;
+    color: #333; /* Color gris oscuro para el texto */
+    margin: 0;
+}
+
+
+
+
+
+
+
+
+
+/* Estilo general para la página de configuración */
+.cuerpo-configuracion {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centrado vertical y horizontal */
+    flex-direction: column;
+    height: 100vh;
+    padding-top: 20px; /* Espacio superior */
+    text-align: center;
+}
+
+/* Título de la página */
+.titulo-configuracion {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #fff;
+}
+
+/* Contenedor para las opciones, usando flexbox para alinearlas horizontalmente */
+.lista-opciones {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 30px; /* Separación entre el título y las opciones */
+}
+
+/* Caja de cada opción */
+.opcion-configuracion {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 30%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+/* Título de cada opción */
+.titulo-opcion {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* Descripción de cada opción */
+.descripcion-opcion {
+    font-size: 1rem;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+/* Estilo de los enlaces para que se vean como botones */
+.boton-opcion {
+    display: inline-block;
+    background-color: #444;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    margin: 10px 0;
+    width: 100%; /* Hace que ocupe todo el ancho de su contenedor */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Efecto hover en los enlaces (botones) */
+.boton-opcion:hover {
+    background-color: #555;
+    transform: scale(1.05);
+}
+
+/* Estilo del botón Volver */
+.boton-volver {
+    background-color: #444;
+    color: #fff;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Efecto hover del botón Volver */
+.boton-volver:hover {
+    background-color: #555;
+    transform: scale(1.05);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Estilo general para la página de actualización Usuario */
+.cuerpo-actualizar-usuario {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Contenedor principal de la sección */
+.contenedor-actualizar-usuario {
+    background-color: #1f1f1f;
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Título de la sección */
+.titulo-actualizar-usuario {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+/* Estilo del formulario */
+.form-actualizar-usuario {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Estilo de los inputs */
+.input-usuario {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background-color: #444;
+    color: #fff;
+    margin-bottom: 20px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.input-usuario:focus {
+    background-color: #555;
+    outline: none;
+}
+
+/* Estilo del botón de cambiar */
+.boton-cambiar-usuario {
+    background-color: #444;
+    color: #fff;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: none;
+}
+
+.boton-cambiar-usuario:hover {
+    background-color: #555;
+    transform: scale(1.05);
+}
+
+/* Estilo del botón de volver */
+.boton-volver {
+    background-color: #333;
+    color: #fff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.boton-volver:hover {
+    background-color: #444;
+    transform: scale(1.05);
+}
+
+
+
+
+
+
+
+
+/* Estilo general para la página de actualización Contraseña */
+.cuerpo-actualizar-contraseña {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Contenedor principal de la sección */
+.contenedor-actualizar-contraseña {
+    background-color: #1f1f1f;
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Título de la sección */
+.titulo-actualizar-contraseña {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+/* Estilo del formulario */
+#passwordForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Estilo de los inputs */
+.newPassword, .confirmPassword {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background-color: #444;
+    color: #fff;
+    margin-bottom: 20px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.newPassword:focus, .confirmPassword:focus {
+    background-color: #555;
+    outline: none;
+}
+
+/* Estilo del botón de cambiar */
+.boton-cambiar-contraseña {
+    background-color: #444;
+    color: #fff;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: none;
+}
+
+.boton-cambiar-contraseña:hover {
+    background-color: #555;
+    transform: scale(1.05);
+}
+
+/* Estilo general para la página de actualización */
+.cuerpo-actualizar-correo {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Contenedor principal de la sección */
+.contenedor-actualizar-correo {
+    background-color: #1f1f1f;
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Título de la sección */
+.titulo-actualizar-correo {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+/* Estilo del formulario */
+.form-actualizar-correo {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Etiqueta del campo de correo */
+.etiqueta-correo {
+    font-size: 1rem;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+/* Estilo del input de correo */
+.input-correo {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background-color: #444;
+    color: #fff;
+    margin-bottom: 20px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.input-correo:focus {
+    background-color: #555;
+    outline: none;
+}
+
+/* Estilo del botón de cambiar */
+.boton-cambiar-correo {
+    background-color: #444;
+    color: #fff;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: none;
+}
+
+.boton-cambiar-correo:hover {
+    background-color: #555;
+    transform: scale(1.05);
+}
+
+/* Estilo del botón de volver */
+.boton-volver {
+    background-color: #333;
+    color: #fff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.boton-volver:hover {
+    background-color: #444;
+    transform: scale(1.05);
+}
+
+
+/** Chats */
+#chat {
+    background-color: #ffffff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    width: 90%;
+    max-width: 500px;
+    height: 80vh;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    color: black;
+}
+
+#chat-box {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    background-color: #fafafa;
+}
+
+#messages {
+    list-style-type: none;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 100;
+    word-wrap: break-word;
+}
+
+#messages > li {
+    padding: .5rem 1rem;
+}
+
+#messages > li:nth-child(odd) {
+    background-color: #7e8286;
+}
+
+#message-form {
+    display: flex;
+    padding: 10px;
+    background-color: #ffffff;
+    border-top: 1px solid #e0e0e0;
+}
+
+#message-input {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 24px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 14px;
+    margin-right: 8px;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#message-input:focus {
+    border-color: #007bff;
+}
+
+#message-button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+#message-button[type="submit"]:hover {
+    background-color: #0056b3;
+}

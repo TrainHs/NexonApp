@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/estilos.css">
+    <title>Crear Publicación</title>
+</head>
+<body class="crear-publicacion">
+
+    <body class="dashboard-body">
+        <header>
+          <div class="header-container">
+            <a class="logo" href="/dashboard"><img src="../css/logo.png" alt=""></a>
+            
+            <form action="/users/buscar" id="searchForm" class="search-bar" method="get ">
+                <i class="icono-lupa fas fa-search"></i>
+                <input id="searchUsername" name="searchUsername" placeholder="Buscar Usuario..." required />
+                <input type="submit" value="Buscar" />
+              </form>
+          </div>
+        </header>
+
+    <!-- Contenedor principal -->
+    <div class="contenedor-principal">
+        
+        
+        <div class="texto-introduccion">
+            <h1>Crea Tu Publicación!</h1><br>
+            <p>Sube tus publicaciones favoritas y comparte con tu comunidad. ¡Haz crecer tu red! Este espacio es ideal para conectar con otros usuarios y compartir contenido visual interesante.</p>
+        </div>
+
+        <!-- Formulario de creación de publicación (Derecha) -->
+        <div class="contenedor-publicacion">
+            <form action="/posts/create" method="post" enctype="multipart/form-data" class="formulario-personalizado" id="form-publicacion">
+                
+                <!-- Entrada para elegir archivos -->
+                <div class="grupo-formulario-personalizado">
+                    <label for="media" class="etiqueta-personalizada">Elige tu archivo</label>
+                    <input type="file" name="images" class="images" multiple>
+                </div>
+
+                <!-- Entrada para la descripción de la publicación -->
+                <div class="grupo-formulario-personalizado">
+                    <label for="description" class="etiqueta-personalizada">Descripción</label>
+                    <input type="text" name="description" class="entrada-texto-personalizada">
+                </div>
+
+                <!-- Contenedor de fotos (con slider) -->
+                <div class="contenedor-fotos">
+                    <div class="slider-fotos">
+                        <img src="../img/uno.jpg" alt="Imagen 1" class="foto-cambiar">
+                        <img src="../img/dos.jpg" alt="Imagen 2" class="foto-cambiar">
+                        <img src="../img/uno.jpg" alt="Imagen 1 duplicada" class="foto-cambiar">
+                    </div>
+                </div>
+
+                
+                    <input type="submit" value="Publicar" class="boton-publicar-personalizado"><br><br>
+                    <a href="/dashboard" class="boton-volver2">Volver</a>
+                
+            </form>
+        </div>
+
+    </div>
+
+</body>
+</html>

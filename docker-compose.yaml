@@ -1,51 +1,51 @@
 version: '3.8'
 
 services:
-  app:
-    image: node:18
-    container_name: app_nginx
-    working_dir: /nginx/proyecto
-    volumes:
-      - ./nginx/proyecto:/nginx/proyecto
+  mongodb:
+    image: mongo:6
+    container_name: mongodb
+    restart: always
     ports:
-      - "3000:3000"  # Node.js usualmente corre en 3000
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: Proyecto
+    volumes:
+      - mongo_data:/data/db
+      - ./database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - app_network
+
+  app:
+    build: ./proyecto
+    container_name: app
+    restart: always
     depends_on:
       - mongodb
-    command: sh -c "npm install && node server.js"
+    ports:
+      - "3000:3000"
     environment:
-      - NODE_ENV=production
+      MONGO_URI: mongodb://mongodb:27017/Proyecto
+    volumes:
+      - ./proyecto:/usr/src/app
     networks:
       - app_network
 
   nginx:
     build: ./nginx
-    container_name: nginx_server
+    container_name: nginx
+    restart: always
     ports:
       - "80:80"
     depends_on:
       - app
-    networks:
-      - app_network
-
-  mongodb:
-    image: mongo:6
-    container_name: mongodb
-    restart: always
     volumes:
-      - mongo_data:/data/db
-      - ./database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
-    ports:
-      - "27017:27017"
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     networks:
       - app_network
-    environment:
-      MONGO_INITDB_DATABASE: Proyecto
 
 volumes:
   mongo_data:
-    driver: local
 
 networks:
   app_network:
     driver: bridge
-

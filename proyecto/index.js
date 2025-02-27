@@ -58,10 +58,14 @@ io.on('connection', (socket) => {
 });
 
 // Conectar a MongoDB y arrancar servidor
-mongoose.connect('mongodb://localhost:27017/Proyecto').then(() => {
+mongoose.connect('mongodb://mongodb:27017/Proyecto').then(() => {
   console.log('Conexión a la base de datos correcta!!');
-
-  app.listen(port, () => {
-    console.log('Servidor corriendo en http://localhost:' + port);
-  });
+}).catch(err => {
+  console.error('Error al conectar a MongoDB:', err);
 });
+
+// Asegúrate de que esta línea está al final y está bien cerrada
+app.listen(3000, '0.0.0.0', () => {
+  console.log('Server is running on port 3000');
+});  // <-- Asegúrate de que este corchete cierre correctamente la función y el archivo
+
